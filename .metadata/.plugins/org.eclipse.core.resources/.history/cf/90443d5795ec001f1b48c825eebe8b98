@@ -1,0 +1,16 @@
+package turf;
+
+import java.util.Scanner;
+import java.sql.*;
+
+public class TurfBook {
+	public static void main(String args[]) throws Exception {
+		Scanner s = new Scanner(System.in);
+		Connection con = DbConnection.getConnection();
+		System.out.println("Welcome to turf booking");
+		
+		System.out.println(" Are u a turf owner:");
+		
+		
+	}
+}

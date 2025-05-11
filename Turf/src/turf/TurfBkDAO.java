@@ -1,0 +1,95 @@
+package turf;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class TurfBkDAO {
+	
+	public static void tBook(Booking bk) throws Exception {
+		Connection con = DbConnection.getConnection();
+		
+		
+		String Q = "INSERT INTO turfBook (cid, tid, bk_date, no_of_players, no_of_hrs, Slot_st, Slot_end) values (?,?,?,?,?,?,?)";
+		PreparedStatement ps = con.prepareStatement(Q);
+		
+		
+		ps.setInt(1, bk.Cid);
+		ps.setInt(2, bk.T);
+		ps.setDate(3, bk.bkDate);
+		ps.setInt(4, bk.ply);
+		ps.setInt(5, bk.hrs);
+		ps.setTime(6,bk.st);
+		ps.setTime(7, bk.e);
+		int a = ps.executeUpdate();
+		con.close();
+	
+	}
+	
+	public static int isTimeAvail(Booking bk) throws Exception{
+		
+		Connection con = DbConnection.getConnection();
+//	
+		String Q = "SELECT COUNT(*) AS count FROM turfBook WHERE Tid = ? and Bk_date =? "
+		        + "AND (Slot_st < ? AND Slot_end > ? "  // Case 1: Starts inside another slot
+		        + "OR (Slot_st >= ? AND Slot_end <= ?) " // Case 2: New slot fully contains an existing slot
+		        + "OR (Slot_st <= ? AND Slot_end >= ?))";
+	
+	    PreparedStatement ps = con.prepareStatement(Q);
+	    
+	    ps.setInt(1, bk.Tid);
+	    ps.setDate(2, bk.bkDate);
+	    ps.setTime(3, bk.e); // End time of the new booking
+	    ps.setTime(4, bk.st);// Start time of the new booking
+	    ps.setTime(5, bk.st);
+	    ps.setTime(6, bk.e);
+	    ps.setTime(7, bk.st);
+	    ps.setTime(8, bk.e);
+
+	    
+	    ResultSet rs = ps.executeQuery();
+	    int count = 0;
+	    if (rs.next()) {
+	        count = rs.getInt("count");
+	    }
+	    
+	    rs.close();
+	    ps.close();
+	    con.close();
+	    
+	    return count;// Returns the number of overlapping bookings
+}
+//		
+//	public static void upTimeDAO(Booking bk) throws Exception{
+//		Connection con = DbConnection.getConnection();
+////		update TurfBook set slot_st= '07:00:00' where slot_st='06:00:00'  and Cid = 1;
+//		String Q = "update TurfBook set slot_st= ? where slot_st= ? and Cid = ?";
+//		PreparedStatement ps = con.prepareStatement(Q);
+//		ps.setTime(1,bk.new_s);
+//		ps.setTime(2, bk.st);
+//		ps.setInt(3, bk.Cid);
+//		int a = ps.executeUpdate();
+//		System.out.println(a);
+//	}
+//	
+//	
+//	public static void endTimeDAO(Booking bk) throws Exception{
+//		Connection con = DbConnection.getConnection();
+//		String Q = "update TurfBook set slot_end= ? where slot_end= ? and Cid = ?";
+//		PreparedStatement ps = con.prepareStatement(Q);
+//		ps.setTime(1,bk.new_e);
+//		ps.setTime(2, bk.end);
+//		ps.setInt(3, bk.Cid);
+//		int a = ps.executeUpdate();
+//		System.out.println(a);
+//		
+//	}
+//	
+
+//	public static void disTbk() throws Exception{
+//		Connection con = DbConnection.getConnection();
+//		String Q = "select * form turfbook"
+//	}
+
+	}

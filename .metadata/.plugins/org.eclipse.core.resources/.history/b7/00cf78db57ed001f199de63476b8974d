@@ -1,0 +1,50 @@
+package turf;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class TurfBkDAO {
+	
+	public static void tBook(Booking bk) throws Exception {
+		Connection con = DbConnection.getConnection();
+		
+		String Q = "INSERT INTO turfBook (cid, tid, bk_date, no_of_players, no_of_hrs, Slot_st, Slot_end) values (?,?,?,?,?,?,?)";
+		PreparedStatement ps = con.prepareStatement(Q);
+		
+		
+		ps.setInt(1, bk.Cid);
+		ps.setInt(2, bk.Tid);
+		ps.setDate(3, bk.bkDate);
+		ps.setInt(4, bk.ply);
+		ps.setInt(5, bk.hrs);
+		ps.setTime(6,bk.St);
+		ps.setTime(7, bk.end);
+		int a = ps.executeUpdate();
+		con.close();
+	
+	}
+	
+	public static void isTimeAvail(Booking bk) throws Exception{
+		Connection con = DbConnection.getConnection();
+		String Q = "select count(distinct ?),count(distinct ?)  from turfBook t1 where exists(select Slot_st ,slot_end from turfBook t2 "
+				+ "where t1.slot_st = t2.slot_st and t1.slot_end = t2.slot_end)";
+		
+		PreparedStatement ps = con.prepareStatement(Q);
+		ps.setTime(1, bk.St);
+		ps.setTime(2, bk.end);
+		ResultSet rs = ps.executeQuery();
+		System.out.println(rs.next());
+		
+//		ResultSet rs = ps.executeQuery();
+//		if(rs.get)
+		
+		
+	}
+
+//	public static void disTbk() throws Exception{
+//		Connection con = DbConnection.getConnection();
+//		String Q = "select * form turfbook"
+//	}
+}

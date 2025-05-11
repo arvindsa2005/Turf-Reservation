@@ -1,0 +1,80 @@
+package turf;
+
+
+import java.util.Scanner;
+import java.sql.*;
+
+public class TurfBook {
+	
+		int TurfBook() {
+		Scanner s = new Scanner(System.in);
+		int select;
+		System.out.println("1.Are u a turf owner?");
+		System.out.println("2.Are u a customer?");
+		System.out.println("3. EXIT");
+		select = s.nextInt();
+		return select;
+	}
+	
+	public static void main(String args[]) throws Exception {
+		Booking b = new Booking();
+		TurfBook t = new TurfBook();
+		int a = t.TurfBook();
+		Scanner s = new Scanner(System.in);
+		
+		System.out.println("Welcome to turf booking");
+		
+		
+		
+		if(a==1) {
+			System.out.println("1. View all Turf");
+			System.out.println("2. Add Turf");
+			int sel = s.nextInt();
+			switch(sel) {
+			case 1:
+				TurfDAO.display_DB();
+				break;
+			case 2:
+				Turf_Info T1 = new Turf_Info();
+				T1.Turf_Add();
+				break;
+			}
+		}
+		
+		
+		else if(a==2) {
+			System.out.println("1. New Customer? \n 2. Existing Customer?");
+			int cus = s.nextInt();
+			switch(cus) {
+			case 1:
+				Cus_info c1 = new Cus_info();
+				c1.Cus_Add();
+			case 2: 
+				System.out.println("Do u need to book turf? (Y/N)");
+				String q = s.next();
+				if(q.equals("y") || q.equals("Y")) {
+					b.Book();
+					
+				}
+				else if(q.equals("n") || q.equals("N")) {
+					t.TurfBook();
+				}
+				
+				
+			}
+		}
+			
+			
+		else if(a==3) {
+			System.out.println("Thank You!!!");
+			
+		}
+		
+		
+		else {
+			System.out.println("Enter the correct choice");
+			t.TurfBook();
+		}
+		
+	}
+}

@@ -1,0 +1,104 @@
+package turf;
+
+import java.util.Scanner;
+import java.sql.*;
+
+public class TurfBook {
+	Scanner s = new Scanner(System.in);
+	int Cid;
+	int Tid;
+	Date bkDate;
+	String getDate;
+	int ply;
+	int hrs;
+	Time St;String getSt;
+	Time end;String getEnd;
+	
+	public void Book() throws Exception {
+		System.out.println("welcome to booking!!!!!!");
+		System.out.println("Enter ur Customer Id:");
+		Cid = s.nextInt();
+		System.out.println("Enter ur turf_id:");
+		Tid = s.nextInt();
+		
+		System.out.println("Enter the Date of Booking:(YYYY-MM-DD)");
+		getDate = s.next();
+		bkDate = Date.valueOf(getDate);
+		
+		System.out.println("Enter no. of players:");
+		ply = s.nextInt();
+		System.out.println("Enter No of hrs to play:");
+		hrs = s.nextInt();
+		
+		System.out.println("Enter the Start time for the solt: (HH in 24hrs)");
+		getSt = s.next();
+		St = Time.valueOf(getSt +":00:00");
+		
+		System.out.println("Enter the End time for the solt: (HH in 24hrs)");
+		getEnd = s.next();
+		end = Time.valueOf(getEnd + ":00:00");
+		
+		TurfBkDAO.tBook();
+	}
+	
+	
+	
+	
+	public static void main(String args[]) throws Exception {
+		TurfBook bk = new TurfBook();
+		Scanner s = new Scanner(System.in);
+		System.out.println("Welcome to turf booking");
+		
+		int select;
+		System.out.println("1.Are u a turf owner?");
+		System.out.println("2.Are u a customer?");
+		System.out.println("3. EXIT");
+		select = s.nextInt();
+		
+		if(select==1) {
+			System.out.println("1. View all Turf");
+			System.out.println("2. Add Turf");
+			int sel = s.nextInt();
+			switch(sel) {
+			case 1:
+				TurfDAO.display_DB();
+				break;
+			case 2:
+				Turf_Info T1 = new Turf_Info();
+				T1.Turf_Add();
+				break;
+			}
+		}
+		
+		
+		else if(select==2) {
+			System.out.println("1. New Customer? \n 2. Existing Customer?");
+			int cus = s.nextInt();
+			switch(cus) {
+			case 1:
+				Cus_info c1 = new Cus_info();
+				c1.Cus_Add();
+				
+			case 2: 
+				System.out.println("Do u need to book turf? (Y/N)");
+				String q = s.next();
+				if(q.equals("y")) {
+					bk.Book();
+				}
+				else {
+					System.out.println("ThankYOu!!!!!!");
+				}
+				
+			}
+		}
+			
+			
+		else if(select==3) {
+			System.out.println("Thank You!!!");
+		}
+		else {
+			System.out.println("Enter the correct choice");
+		}
+		
+	}
+}

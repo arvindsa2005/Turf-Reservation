@@ -1,0 +1,79 @@
+package turf;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class TurfBkDAO {
+	
+	public static void tBook(Booking bk) throws Exception {
+		Connection con = DbConnection.getConnection();
+		
+		
+		String Q = "INSERT INTO turfBook (cid, tid, bk_date, no_of_players, no_of_hrs, Slot_st, Slot_end) values (?,?,?,?,?,?,?)";
+		PreparedStatement ps = con.prepareStatement(Q);
+		
+		
+		ps.setInt(1, bk.Cid);
+		ps.setInt(2, bk.T);
+		ps.setDate(3, bk.bkDate);
+		ps.setInt(4, bk.ply);
+		ps.setInt(5, bk.hrs);
+		ps.setTime(6,bk.st);
+		ps.setTime(7, bk.e);
+		int a = ps.executeUpdate();
+		con.close();
+	
+	}
+	
+	public static int isTimeAvail(Booking bk) throws Exception{
+		
+		Connection con = DbConnection.getConnection();
+		int dupCountSt =0;
+		int dupCountend = 0;
+		String Q = "select count(distinct ?) as dup_st,count(distinct ?) as dup_end  from turfBook t1 where exists(select Slot_st ,slot_end from turfBook t2 "
+				+ "where t1.slot_st = t2.slot_st and t1.slot_end = t2.slot_end)";
+		
+		PreparedStatement ps = con.prepareStatement(Q);
+		ps.setTime(1, bk.st);
+		ps.setTime(2, bk.e);
+		ResultSet rs = ps.executeQuery();
+		if(rs.next()) {
+			dupCountSt = rs.getInt("dup_st");
+			dupCountend = rs.getInt("dup_end");
+		}
+		return dupCountSt;		
+	}
+	
+//	public static void upTimeDAO(Booking bk) throws Exception{
+//		Connection con = DbConnection.getConnection();
+////		update TurfBook set slot_st= '07:00:00' where slot_st='06:00:00'  and Cid = 1;
+//		String Q = "update TurfBook set slot_st= ? where slot_st= ? and Cid = ?";
+//		PreparedStatement ps = con.prepareStatement(Q);
+//		ps.setTime(1,bk.new_s);
+//		ps.setTime(2, bk.st);
+//		ps.setInt(3, bk.Cid);
+//		int a = ps.executeUpdate();
+//		System.out.println(a);
+//	}
+//	
+//	
+//	public static void endTimeDAO(Booking bk) throws Exception{
+//		Connection con = DbConnection.getConnection();
+//		String Q = "update TurfBook set slot_end= ? where slot_end= ? and Cid = ?";
+//		PreparedStatement ps = con.prepareStatement(Q);
+//		ps.setTime(1,bk.new_e);
+//		ps.setTime(2, bk.end);
+//		ps.setInt(3, bk.Cid);
+//		int a = ps.executeUpdate();
+//		System.out.println(a);
+//		
+//	}
+//	
+
+//	public static void disTbk() throws Exception{
+//		Connection con = DbConnection.getConnection();
+//		String Q = "select * form turfbook"
+//	}
+}

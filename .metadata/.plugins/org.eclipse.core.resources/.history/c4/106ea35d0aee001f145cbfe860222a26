@@ -1,0 +1,92 @@
+package turf;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.Time;
+import java.util.Scanner;
+
+public class Booking {
+	Scanner s = new Scanner(System.in);
+	int Cid;
+	int Tid;
+	Date bkDate;
+	String getDate;
+	int ply;
+	int hrs;
+	Time St;String getSt;
+	Time end;String getEnd;
+	
+	public void Book() throws Exception {
+		
+		System.out.println("welcome to booking!!!!!!");
+		System.out.println("Enter ur Customer Id:");
+		Cid = s.nextInt();
+		
+		getTid();
+		
+		System.out.println("Enter the Date of Booking:(YYYY-MM-DD)");
+		getDate = s.next();
+		bkDate = Date.valueOf(getDate);
+		
+		System.out.println("Enter no. of players:");
+		ply = s.nextInt();
+		System.out.println("Enter No of hrs to play:");
+		hrs = s.nextInt();
+	
+		getStTime();
+		getEndTime();
+//		
+//		if(TurfBkDAO.isTimeAvail(this)>0) {
+//			System.out.println("Time Not Available!!");
+//			System.out.println("1. Enter other Time \n 2. Choose Different turf \n 3. Exit");
+//			int choice = s.nextInt();
+//			switch (choice) {
+//			case 1:
+//				getStTime();
+//				getEndTime();
+//				break;
+//			case 2:
+//				getTid();
+//				break;
+//			case 3:
+//				break;
+//			}
+//			
+//			
+//		}else{
+//			System.out.println("booked");
+//		};
+		
+		TurfBkDAO.tBook(this);
+		
+	}
+	
+	public Time getStTime() {
+		System.out.println("Enter the Start time for the solt: (HH in 24hrs)");
+		getSt = s.next();
+		St = Time.valueOf(getSt +":00:00");
+		return St;
+	}
+	
+		public Time getEndTime() {
+			System.out.println("Enter the End time for the solt: (HH in 24hrs)");
+			getEnd = s.next();
+			end = Time.valueOf(getEnd + ":00:00");
+			return end;
+		}	
+		
+	
+	
+	public int getTid() {
+		System.out.println("Enter ur turf_id:");
+		Tid = s.nextInt();
+		return Tid;
+	}
+	
+	public void updateTime() {
+		
+	}
+	
+	
+	
+}

@@ -1,0 +1,103 @@
+package turf;
+
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+import java.sql.*;
+
+public class TurfBook {
+	static Scanner s = new Scanner(System.in);
+	
+	public static void Con() throws Exception {
+		System.out.println("Do you want to Continue?(Y/N)");
+		String q = s.next();
+		if(q.equals("y") || q.equals("Y")) {
+			new TurfBook();
+			
+		}
+		else if(q.equals("n") || q.equals("N")) {
+			System.out.println("Thank U!!!");
+			return;
+		}
+	}
+	
+	
+	TurfBook() throws Exception {
+		
+		Booking b = new Booking();
+		
+		int select;
+		System.out.println("1.Are u a turf owner?");
+		System.out.println("2.Are u a customer?");
+		System.out.println("3. EXIT");
+		select = s.nextInt();
+		
+		if(select==1) {
+			System.out.println("1. View all Turf");
+			System.out.println("2. Add Turf");
+			int sel = s.nextInt();
+			switch(sel) {
+			case 1:
+				TurfDAO.display_DB();
+				Con();
+				break;
+			case 2:
+				Turf_Info T1 = new Turf_Info();
+				T1.Turf_Add();
+				Con();
+				break;
+			}
+		}
+		
+		
+		else if(select==2) {
+			System.out.println("1. New Customer? \n 2. Existing Customer?");
+			int cus = s.nextInt();
+			switch(cus) {
+			case 1:
+				Cus_info c1 = new Cus_info();
+				c1.Cus_Add();
+				
+			case 2: 
+				System.out.println("Do u need to book turf? (Y/N)");
+				String q = s.next();
+				if(q.equals("y") || q.equals("Y")) {
+					b.Book();
+					
+				}
+				else if(q.equals("n") || q.equals("N")) {
+					Con();
+				}
+			}
+		}
+			
+			
+		else if(select==3) {
+			System.out.println("Thank You!!!");
+			
+		}
+		
+		
+		else {
+			System.out.println("Enter the correct choice");
+			new TurfBook();
+		}
+		
+	}
+	
+	
+
+	
+	public static void main(String args[]) throws Exception {
+		try {
+			new TurfBook();
+		} catch (InputMismatchException e) {
+			System.out.println("Enter correct input!!");
+		} catch(Exception e) {
+			System.out.println("Plese follow the procedure!!!");
+		}
+		finally{
+			new TurfBook();
+		}
+	}
+}

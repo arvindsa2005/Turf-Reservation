@@ -1,0 +1,65 @@
+package turf;
+
+import java.sql.*;
+
+public class TurfDAO {
+	
+	public static void insert(Turf_Info T1) throws Exception {
+		Connection con = DbConnection.getConnection();
+		String Q = "insert into turf_info (Turf_Name,Location,No_of_Players,Cost_per_hr,Open_time,Close_time) values(?,?,?,?,?,?)";
+		PreparedStatement ps = con.prepareStatement(Q);
+		con.setAutoCommit(false);
+		
+		ps.setString(1,T1.Tname);
+		ps.setString(2,T1.Location);
+		ps.setInt(3,T1.players);
+		ps.setInt(4, T1.cost);
+		ps.setTime(5, T1.st_time);
+		ps.setTime(6, T1.close_time);
+		
+		int a =ps.executeUpdate();
+		System.out.println(a);
+		con.close();
+		if(a<0) {
+			con.commit();
+		}
+	}
+	
+	public static void display_DB() throws Exception {
+		Connection con = DbConnection.getConnection();
+		String Q = "select * from turf_info";
+		Statement ps = con.createStatement();
+		ResultSet rs = ps.executeQuery(Q);
+		while(rs.next()) {
+			System.out.print(rs.getInt(1)+" ");
+			System.out.print(rs.getString(2)+" ");;
+			System.out.print(rs.getString(3)+" ");
+			System.out.print(rs.getInt(4)+" ");
+			System.out.println(rs.getInt(5));
+			System.out.println(rs.getTime(6));
+			System.out.println(rs.getTime(7));
+		}
+	}
+//	
+//	public static void slot(Turf_Info T2) throws Exception {
+//		Connection con = DbConnection.getConnection();
+//		String Q1 = "{call slot(?)}";
+//		CallableStatement cs = con.prepareCall(Q1);
+//		cs.setString(1, T2.Tname);
+//		cs.executeQuery();
+//		String Q = "insert into Timing values (?,?,?)";
+//		PreparedStatement ps = con.prepareStatement(Q);
+//		int o_t = Integer.parseInt(T2.st.split(":")[0]);
+//		int e_t = Integer.parseInt(T2.end.split(":")[0]);
+//		for(int i = o_t;i<e_t;i++) {
+//			Time slot_st = Time.valueOf(String.format("%02d:00:00", i));
+//			Time slot_end = Time.valueOf(String.format("%02d:00:00", i +1));
+//			ps.setInt(1, T2.);
+//			ps.setTime(2, slot_st);
+//			ps.setTime(3, slot_end);
+//			ps.executeUpdate();
+//		}
+		
+		
+	}
+}

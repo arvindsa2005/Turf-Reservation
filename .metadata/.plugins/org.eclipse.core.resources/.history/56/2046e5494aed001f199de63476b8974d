@@ -1,0 +1,30 @@
+package turf;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
+public class TurfBkDAO {
+	
+	public static void tBook(Booking bk) throws Exception {
+		Booking tb = new Booking();
+		Connection con = DbConnection.getConnection();
+		
+//		String Q = "INSERT INTO turfBook (cid, tid, bk_date, no_of_players, no_of_hrs, Slot_st, Slot_end) values (?,?,?,?,?,?,?)";
+		String Q = "INSERT INTO turfBook (cid, tid )values (?,?)";
+		PreparedStatement ps = con.prepareStatement(Q);
+		
+		
+		ps.setInt(1, tb.Cid);
+		ps.setInt(2, tb.Tid);
+//		ps.setDate(3, tb.bkDate);
+//		ps.setInt(4, tb.ply);
+//		ps.setInt(5, tb.hrs);
+//		ps.setTime(6,tb.St);
+//		ps.setTime(7, tb.end);
+		
+		int a = ps.executeUpdate();
+		con.close();
+	}
+	
+	
+}
